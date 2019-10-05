@@ -1,6 +1,7 @@
 module.exports = function zeros(expression) {
 
-	let expressionSplit = expression.split("*");
+	//create array without '*'
+	let expressionSplit = expression.split('*');
 	let fiveCounter = 0;
 	let twoCounter = 0;
 
@@ -8,131 +9,59 @@ module.exports = function zeros(expression) {
 
 		if (expressionSplit[i].endsWith('!!')) {
 			twoExclamation = Number(expressionSplit[i].slice(0,-2));
-
-			if (twoExclamation % 2 === 0) {
-
-				for (j = 5; twoExclamation / j >= 1; j *= 5) {
-					fiveCounter += Math.floor(twoExclamation / j);
-				};
-			}
-
+			let matches = doubleFactorio(twoExclamation);
+			matchNumber(matches);
 		} else {
-
 			oneExclamation = Number(expressionSplit[i].slice(0, -1));
+			let matches = factorio(oneExclamation);
+			matchNumber(matches);
+		}
+	}
 
-			for (j = 5; oneExclamation / j >= 1; j *= 5) {
-				fiveCounter += Math.floor(oneExclamation / j);
-			};
-		};
+	return Math.min(fiveCounter, twoCounter);
 
-	};
-
-	return fiveCounter;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // let twoExclamation = Number(expressionSplit[i].slice(0, -2));
-
-      // } else {
-
-      // let oneExclamation = Number(expressionSplit[i].slice(0, -1));
-
-      // for (five = 5; oneExclamation / five >= 1; five *= 5)
-      //     zeroCounter++;
-      // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // expressionSplitNumber1 = Number(expressionSplit.endsWith('!').slice(0, -1));
-    // expressionSplitNumber2 - Number(expressionSplit.endsWith('!!').slice(0,-2));
-
-    // console.log(expressionSplitNumber1);
-    // expressionNumber = Number(expression.slice(0, -1));
-    // zeroCounter = 0;
-    // for (five = 5; expressionNumber / five >= 1; five *= 5);
-    //     zeroCounter++;
-	// return zeroCounter; 
+	function doubleFactorio(number){
+		let result = [];
+		//check even 
+		if (number % 2 == 0) {
+			for (let i = 2; i <= number; i += 2)
+				result.push(i)
+		//check odd
+		} else {
+			for (let i = 1; i <= number; i += 2)
+				result.push(i)
+		}
+		return result;
+	}
 	
-
-
-		// let expressionSplit = expression.split("*");
-
-	// let zeroCounter = 0;
-
-	// for (i = 0; i < expressionSplit.length; i++) {
-
-	// 	if (expressionSplit[i].endsWith('!!')) {
-
-	// 		twoExclamation = Number(expressionSplit[i].slice(0, -2));
-
-	// 		acc = twoExclamation;
-
-	// 		if (twoExclamation % 2 == 0) {
-
-	// 			for (j = 2; j < expressionSplit.length; j += 2) {
-
-	// 				acc = acc * j;
-
-	// 			};
-
-	// 		} else {
-
-	// 			for (j = 1; j < expressionSplit.length; j += 2) {
-
-	// 				acc = acc * j;
-
-	// 			};
-	// 		};
-	// 	};
-
-	// 	zeroCounter += acc;
-
-	// };
-
-	// return zeroCounter;
-
+	function factorio(number) {
+		let result = [];
+		for (let i = 1; i <= number; i++) {
+			result.push(i)
+		}
+		return result;
+	}
+	
+	//match for 2's and 5's
+	function matchNumber(expressionSplit) {
+		for (let i = 0; i < expressionSplit.length; i++) {
+			//counting 2's
+			if (expressionSplit[i] % 2 == 0) {
+				let number = expressionSplit[i];
+				while (number % 2 == 0) {
+					number = number / 2;
+					twoCounter++;
+				}
+			}
+			//counting 5's 
+			if (expressionSplit[i] % 5 == 0) {
+				let number = expressionSplit[i];
+				while (number % 5 == 0) {
+					number = number / 5;
+					fiveCounter++;
+				}
+			}
+		}
+	}
+};
 
